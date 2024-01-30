@@ -1,0 +1,8 @@
+<Project>
+
+  <PropertyGroup>
+    <RepositoryRoot>$(MSBuildThisFileDirectory)</RepositoryRoot>
+    <AssetsDir>$(RepositoryRoot)assets</AssetsDir>
+  </PropertyGroup>
+
+</Project>

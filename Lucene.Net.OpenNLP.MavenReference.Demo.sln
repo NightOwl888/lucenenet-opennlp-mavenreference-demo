@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33627.172
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lucene.Net.Analysis.OpenNLP.StanfordCoreNLP", "src\Lucene.Net.Analysis.OpenNLP.StanfordCoreNLP\Lucene.Net.Analysis.OpenNLP.StanfordCoreNLP.csproj", "{80797C66-507D-4301-8AED-8D461F611350}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lucene.Net.Analysis.OpenNLP.StanfordCoreNLP.Tests", "src\Lucene.Net.Analysis.OpenNLP.StanfordCoreNLP.Tests\Lucene.Net.Analysis.OpenNLP.StanfordCoreNLP.Tests.csproj", "{5DD61A16-CF62-4F32-9C94-9306F6312E32}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{40CBBEB4-0B35-49B2-8FE2-2722F37B77FF}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A8684828-9CF2-4657-A717-00AC77F7B5B2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "download-urls", "download-urls", "{8DB8C7A7-A1CF-47CF-B6E6-BB7CB1284F11}"
+	ProjectSection(SolutionItems) = preProject
+		download-urls\opennlp-chunker-urls.txt = download-urls\opennlp-chunker-urls.txt
+		download-urls\opennlp-ner-person-urls.txt = download-urls\opennlp-ner-person-urls.txt
+		download-urls\opennlp-pos-mexent-urls.txt = download-urls\opennlp-pos-mexent-urls.txt
+		download-urls\opennlp-sent-urls.txt = download-urls\opennlp-sent-urls.txt
+		download-urls\opennlp-tokenizer-urls.txt = download-urls\opennlp-tokenizer-urls.txt
+		download-urls\stanford-corenlp-model-urls.txt = download-urls\stanford-corenlp-model-urls.txt
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{80797C66-507D-4301-8AED-8D461F611350}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80797C66-507D-4301-8AED-8D461F611350}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80797C66-507D-4301-8AED-8D461F611350}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80797C66-507D-4301-8AED-8D461F611350}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DD61A16-CF62-4F32-9C94-9306F6312E32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DD61A16-CF62-4F32-9C94-9306F6312E32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DD61A16-CF62-4F32-9C94-9306F6312E32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DD61A16-CF62-4F32-9C94-9306F6312E32}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{80797C66-507D-4301-8AED-8D461F611350} = {A8684828-9CF2-4657-A717-00AC77F7B5B2}
+		{5DD61A16-CF62-4F32-9C94-9306F6312E32} = {A8684828-9CF2-4657-A717-00AC77F7B5B2}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {20F82F11-8406-4844-BC14-DF5FF5E055D0}
+	EndGlobalSection
+EndGlobal

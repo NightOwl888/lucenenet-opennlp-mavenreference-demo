@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+
+    <OpenNLPPackageVersion>1.9.1</OpenNLPPackageVersion>
+    <CoreNLPPackageVersion>4.5.5</CoreNLPPackageVersion>
+  </PropertyGroup>
+
+  <ItemGroup Label="Specifies models should be copied to the output folder (of projects that depend on this one as well)">
+    <None Include="$(AssetsDir)/corenlp/**/*"
+          Exclude="$(AssetsDir)/corenlp/META-INF/**/*;$(AssetsDir)/corenlp/StanfordCoreNLP.properties"
+          CopyToOutputDirectory="PreserveNewest" Visible="false" />
+    <None Include="$(AssetsDir)/opennlp/**/*"
+          CopyToOutputDirectory="PreserveNewest" Visible="false" />
+  </ItemGroup>
+
+  <Import Project="$(MSBuildThisFileDirectory)PrepareModels.targets" />
+
+</Project>

@@ -1,0 +1,7 @@
+# The following is the list of URLs where OpenNLP tokenizer models can be downloaded. For redundency, we allow
+# multiple download locations for different Maven mirrors. Use {0} to replace the
+# major version number {1} to replace the minor version number, and {2} to replace the patch
+# version number. The build will fill these in automatically.
+#
+# The file will be downloaded to assets/, but only if the file doesn't already exist there.
+https://opennlp.sourceforge.net/models-1.5/en-token.bin

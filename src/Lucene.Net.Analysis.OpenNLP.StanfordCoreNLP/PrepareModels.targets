@@ -1,0 +1,130 @@
+<Project>
+
+  <Target Name="UnpackCoreNLPModels" BeforeTargets="BeforeBuild">
+    <Unzip SourceFiles="$(CoreNLPModelJarFilePath)" DestinationFolder="$(AssetsDir)/corenlp" SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true"/>
+  </Target>
+
+  <Target Name="DownloadCoreNLPModels" BeforeTargets="UnpackCoreNLPModels" Returns="$(CoreNLPModelJarFilePath)">
+
+    <PropertyGroup>
+      <Major>$(CoreNLPPackageVersion.Split('.')[0])</Major>
+      <Minor>$(CoreNLPPackageVersion.Split('.')[1])</Minor>
+      <Patch>$(CoreNLPPackageVersion.Split('.')[1])</Patch>
+
+      <CoreNLPUrlFilePath>$(RepositoryRoot)download-urls/stanford-corenlp-model-urls.txt</CoreNLPUrlFilePath>
+      <CoreNLPModelJarFilePath>$(AssetsDir)/corenlp-models-$(Major).$(Minor).$(Patch).jar</CoreNLPModelJarFilePath>
+    </PropertyGroup>
+
+    <DownloadFile UrlFilePath="$(CoreNLPUrlFilePath)" UrlName="CoreNLP Models" Version="$(CoreNLPPackageVersion)" DestinationFilePath="$(CoreNLPModelJarFilePath)"/>
+  </Target>
+
+  <Target Name="DownloadOpenNLPModels" BeforeTargets="BeforeBuild">
+    <PropertyGroup Label="URL Locations">
+      <OpenNLPTokenizerUrlFilePath>$(RepositoryRoot)download-urls/opennlp-tokenizer-urls.txt</OpenNLPTokenizerUrlFilePath>
+      <OpenNLPSentenceUrlFilePath>$(RepositoryRoot)download-urls/opennlp-sent-urls.txt</OpenNLPSentenceUrlFilePath>
+      <OpenNLPPOSUrlFilePath>$(RepositoryRoot)download-urls/opennlp-pos-mexent-urls.txt</OpenNLPPOSUrlFilePath>
+      <OpenNLPChunkerUrlFilePath>$(RepositoryRoot)download-urls/opennlp-chunker-urls.txt</OpenNLPChunkerUrlFilePath>
+      <OpenNLPNERUrlFilePath>$(RepositoryRoot)download-urls/opennlp-ner-person-urls.txt</OpenNLPNERUrlFilePath>
+    </PropertyGroup>
+    <PropertyGroup Label="Destination Locations">
+      <OpenNLPTokenizerModelPath>$(AssetsDir)/opennlp/en-tokenizer.bin</OpenNLPTokenizerModelPath>
+      <OpenNLPSentenceModelPath>$(AssetsDir)/opennlp/en-sent.bin</OpenNLPSentenceModelPath>
+      <OpenNLPPOSModelPath>$(AssetsDir)/opennlp/en-pos-mexent.bin</OpenNLPPOSModelPath>
+      <OpenNLPChunkerModelPath>$(AssetsDir)/opennlp/en-chunker.bin</OpenNLPChunkerModelPath>
+      <OpenNLPNERModelPath>$(AssetsDir)/opennlp/en-ner-person.bin</OpenNLPNERModelPath>
+    </PropertyGroup>
+
+    <DownloadFile UrlFilePath="$(OpenNLPTokenizerUrlFilePath)" UrlName="OpenNLP Tokenizer Model" Version="$(OpenNLPPackageVersion)" DestinationFilePath="$(OpenNLPTokenizerModelPath)"/>
+    <DownloadFile UrlFilePath="$(OpenNLPSentenceUrlFilePath)" UrlName="OpenNLP Sentence Model" Version="$(OpenNLPPackageVersion)" DestinationFilePath="$(OpenNLPSentenceModelPath)"/>
+    <DownloadFile UrlFilePath="$(OpenNLPPOSUrlFilePath)" UrlName="OpenNLP POS Model" Version="$(OpenNLPPackageVersion)" DestinationFilePath="$(OpenNLPPOSModelPath)"/>
+    <DownloadFile UrlFilePath="$(OpenNLPChunkerUrlFilePath)" UrlName="OpenNLP Chunker Model" Version="$(OpenNLPPackageVersion)" DestinationFilePath="$(OpenNLPChunkerModelPath)"/>
+    <DownloadFile UrlFilePath="$(OpenNLPNERUrlFilePath)" UrlName="OpenNLP Tokenizer Model" Version="$(OpenNLPPackageVersion)" DestinationFilePath="$(OpenNLPNERModelPath)"/>
+  </Target>
+
+  <UsingTask TaskName="DownloadFile" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildBinPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <UrlFilePath ParameterType="System.String" Required="true" />
+      <UrlName ParameterType="System.String" Required="true" />
+      <Version ParameterType="System.String" Required="true" />
+      <DestinationFilePath ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Net" />
+      <Using Namespace="System.Text" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+        if (File.Exists(DestinationFilePath.ToString())) return true;
+        
+        Log.LogMessage(MessageImportance.High, $"Downloading {UrlName}...");
+        
+        var urls = new List<string>();
+        // Read the URLs from the config file
+        {
+            string[] versionSplit = Version.ToString().Split('.');
+            using var reader = new StreamReader(UrlFilePath.ToString(), Encoding.UTF8);
+            string line, lineCleaned;
+            while ((line = reader.ReadLine()) != null)
+            {
+                // Ignore commented line
+                if (line.StartsWith("#", StringComparison.Ordinal))
+                    continue;
+                // Ignore line after comment symbol (if it exists)
+                int firstComment = line.IndexOf('#');
+                if (firstComment >=0)
+                    lineCleaned = line.Substring(0, firstComment);
+                else
+                    lineCleaned = line;
+                urls.Add(string.Format(lineCleaned, versionSplit[0], versionSplit[1], versionSplit[2]));
+            }
+        }
+
+        // Attempt to download the file from the URLs, falling back to the next URL if unsuccessful.
+        bool successful = false;
+        Directory.CreateDirectory(Path.GetDirectoryName(DestinationFilePath.ToString()));
+        using var client = new WebClient();
+        foreach (var url in urls)
+        {
+            try
+            {
+                var tempFile = Path.GetDirectoryName(DestinationFilePath.ToString()) + Path.DirectorySeparatorChar + Guid.NewGuid().ToString();
+                client.DownloadFile(url, tempFile);
+                File.Move(tempFile, DestinationFilePath.ToString());
+                successful = true;
+                Log.LogMessage(MessageImportance.High, $"[SUCCESS] Downloaded {DestinationFilePath} from {url}");
+                break;
+            }
+            catch (Exception e)
+            {
+                Log.LogMessage(MessageImportance.High, $"[ERROR] Downloading {DestinationFilePath} from {url} failed: {e}");
+                continue;
+            }
+        }
+        
+        // Fail the build if we couldn't get the file.
+        if (!successful)
+        {
+            string errorMessage = $"The build cannot continue without {UrlName}. Use Maven search (https://mvnrepository.com or https://search.maven.org/) to look for the file and download it manually to {DestinationFilePath}.";
+            
+            // Log an error message
+            BuildEngine.LogErrorEvent(new BuildErrorEventArgs(
+                "YourTask",
+                "YourTask",
+                null,
+                0,
+                0,
+                0,
+                0,
+                errorMessage,
+                string.Empty,
+                "YourTask"));
+            
+            throw new Exception(errorMessage);
+        }
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+
+</Project>
