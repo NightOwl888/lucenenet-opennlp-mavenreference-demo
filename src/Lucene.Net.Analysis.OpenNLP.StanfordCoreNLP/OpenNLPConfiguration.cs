@@ -1,4 +1,7 @@
-﻿namespace Lucene.Net.Analysis.OpenNlp
+﻿using Lucene.Net.Analysis.Util;
+using System;
+
+namespace Lucene.Net.Analysis.OpenNlp
 {
     /// <summary>
     /// A configuration class to pass in the location of the OpenNLP model files. The file paths
@@ -6,10 +9,17 @@
     /// </summary>
     public class OpenNLPConfiguration
     {
+        public OpenNLPConfiguration(IResourceLoader resourceLoader)
+        {
+            ResourceLoader = resourceLoader ?? throw new ArgumentNullException(nameof(resourceLoader));
+        }
+
         public string TokenizerModel { get; set; } = "en-token.bin";
         public string ChunkerModel { get; set; } = "en-chunker.bin";
         public string NERModel { get; set; } = "en-ner-person.bin";
         public string POSModel { get; set; } = "en-pos-maxent.bin";
         public string SentenceModel { get; set; } = "en-sent.bin";
+
+        public IResourceLoader ResourceLoader { get; private set; }
     }
 }
