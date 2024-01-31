@@ -27,9 +27,9 @@
       <OpenNLPNERUrlFilePath>$(RepositoryRoot)download-urls/opennlp-ner-person-urls.txt</OpenNLPNERUrlFilePath>
     </PropertyGroup>
     <PropertyGroup Label="Destination Locations">
-      <OpenNLPTokenizerModelPath>$(AssetsDir)/opennlp/en-tokenizer.bin</OpenNLPTokenizerModelPath>
+      <OpenNLPTokenizerModelPath>$(AssetsDir)/opennlp/en-token.bin</OpenNLPTokenizerModelPath>
       <OpenNLPSentenceModelPath>$(AssetsDir)/opennlp/en-sent.bin</OpenNLPSentenceModelPath>
-      <OpenNLPPOSModelPath>$(AssetsDir)/opennlp/en-pos-mexent.bin</OpenNLPPOSModelPath>
+      <OpenNLPPOSModelPath>$(AssetsDir)/opennlp/en-pos-maxent.bin</OpenNLPPOSModelPath>
       <OpenNLPChunkerModelPath>$(AssetsDir)/opennlp/en-chunker.bin</OpenNLPChunkerModelPath>
       <OpenNLPNERModelPath>$(AssetsDir)/opennlp/en-ner-person.bin</OpenNLPNERModelPath>
     </PropertyGroup>
