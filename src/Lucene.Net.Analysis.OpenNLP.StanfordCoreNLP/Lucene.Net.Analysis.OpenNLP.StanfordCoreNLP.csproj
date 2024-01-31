@@ -8,8 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Lucene.Net.Analysis.OpenNLP" Version="4.8.0-ci0000002143" />
-    <PackageReference Include="IKVM" Version="8.7.5" />
+    <PackageReference Include="Lucene.Net.Analysis.OpenNLP" Version="4.8.0-ci0000002144" />
     <PackageReference Include="IKVM.Maven.Sdk" Version="1.6.7" />
   </ItemGroup>
   
@@ -18,11 +17,8 @@
   </ItemGroup>
 
   <ItemGroup Label="Specifies models should be copied to the output folder (of projects that depend on this one as well)">
-    <None Include="$(AssetsDir)/corenlp/**/*"
-          Exclude="$(AssetsDir)/corenlp/META-INF/**/*;$(AssetsDir)/corenlp/StanfordCoreNLP.properties"
-          CopyToOutputDirectory="PreserveNewest" Visible="false" />
-    <None Include="$(AssetsDir)/opennlp/**/*"
-          CopyToOutputDirectory="PreserveNewest" Visible="false" />
+    <None Include="$(AssetsDir)/corenlp/**/*" Exclude="$(AssetsDir)/corenlp/META-INF/**/*;$(AssetsDir)/corenlp/StanfordCoreNLP.properties" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+    <None Include="$(AssetsDir)/opennlp/**/*" CopyToOutputDirectory="PreserveNewest" Visible="false" />
   </ItemGroup>
 
   <Import Project="$(MSBuildThisFileDirectory)PrepareModels.targets" />
